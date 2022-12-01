@@ -1,0 +1,1 @@
+[[https://adventofcode.com/][advent of code 2022]]
