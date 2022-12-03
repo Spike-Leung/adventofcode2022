@@ -1,0 +1,17 @@
+{
+  "extends": "@tsconfig/deno/tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "lib": ["esnext", "dom", "deno.ns"],
+    "target": "esnext",
+    "strict": true,
+    "plugins": [
+      {
+      "name": "typescript-deno-plugin",
+      "importmap": "import_map.json"
+    }
+    ]
+  },
+  "include": ["puzzle/**/*"],
+  "exclude": ["node_modules"]
+}
