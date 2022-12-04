@@ -1,9 +1,8 @@
-import { readLines } from "https://deno.land/std@0.167.0/io/buffer.ts";
-let fileReader = await Deno.open("./input.txt");
+import { getInputInterator } from "@/utils.ts"
 let sum = 0
 let max = 0
 
-for await (let line of readLines(fileReader)) {
+for await (let line of await getInputInterator(import.meta)) {
   if (line !== "") {
     sum += +line
   } else {

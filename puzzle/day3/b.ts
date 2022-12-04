@@ -1,7 +1,6 @@
-import { readLines } from "https://deno.land/std@0.167.0/io/buffer.ts";
+import { getInputInterator } from "@/utils.ts"
 import count from "./util.ts"
 
-const fileReader = await Deno.open("./input.txt");
 let sum = 0
 
 function findBadgeInGroup(groups: string[]) {
@@ -23,7 +22,7 @@ function findBadgeInGroup(groups: string[]) {
 }
 
 let group = []
-for await (let line of readLines(fileReader)) {
+for await (let line of await getInputInterator(import.meta)) {
   group.push(line)
 
   if (group.length === 3) {

@@ -1,10 +1,9 @@
-import { readLines } from "https://deno.land/std@0.167.0/io/buffer.ts";
-import count from "./util.ts"
+import { getInputInterator } from "@/utils.ts"
 
-const fileReader = await Deno.open("./input.txt");
+import count from "./util.ts"
 let sum = 0
 
-function findSameChar(str) {
+function findSameChar(str: string) {
   const half = str.length / 2
   const left = str.slice(0, half)
   const rightArr = [...str.slice(half)]
@@ -19,7 +18,7 @@ function findSameChar(str) {
 }
 
 
-for await (let line of readLines(fileReader)) {
+for await (let line of await getInputInterator(import.meta)) {
   sum += (count[findSameChar(line)] ?? 0)
 }
 

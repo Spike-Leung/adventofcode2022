@@ -1,5 +1,4 @@
-import { readLines } from "https://deno.land/std@0.167.0/io/buffer.ts";
-const fileReader = await Deno.open("./input.txt");
+import { getInputInterator } from "@/utils.ts"
 
 let count = 0
 
@@ -14,7 +13,7 @@ function isPairOverlap(pairs: string): boolean {
   return pair1ContainsPair2 || pair2ContiansPair1
 }
 
-for await (let line of readLines(fileReader)) {
+for await (let line of await getInputInterator(import.meta)) {
   count += isPairOverlap(line) ? 1 : 0
 }
 

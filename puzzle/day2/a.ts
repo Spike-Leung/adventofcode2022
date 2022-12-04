@@ -1,5 +1,4 @@
-import { readLines } from "https://deno.land/std@0.167.0/io/buffer.ts";
-let fileReader = await Deno.open("./input.txt");
+import { getInputInterator } from "@/utils.ts"
 let totalScore = 0
 
 const MATCH_SCORE = {
@@ -57,7 +56,7 @@ function calcScoreInOneRound(strategy: string) {
   return score
 }
 
-for await (let line of readLines(fileReader)) {
+for await (let line of await getInputInterator(import.meta)) {
   totalScore += calcScoreInOneRound(line)
 }
 
