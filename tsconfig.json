@@ -1,10 +1,14 @@
 {
   "extends": "@tsconfig/deno/tsconfig.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "module": "esnext",
     "lib": ["esnext", "dom", "deno.ns"],
     "target": "esnext",
     "strict": true,
+    "paths": {
+      "@/*": ["puzzle/*"]
+    },
     "plugins": [
       {
       "name": "typescript-deno-plugin",
