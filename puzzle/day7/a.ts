@@ -1,5 +1,7 @@
 import rootDir from "./util.ts"
 
+const LIMIT = 100000
+
 function calcTotal() {
   let sum = 0
 
@@ -10,7 +12,7 @@ function calcTotal() {
 
     const dirTotal = Object.values(data).reduce((acc: number, cur: number | object) => acc += dfs(cur), 0)
 
-    if (dirTotal <= 100000) {
+    if (dirTotal <= LIMIT) {
       sum += dirTotal
     }
 
