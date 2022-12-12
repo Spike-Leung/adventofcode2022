@@ -1,0 +1,29 @@
+* Refs
+#+begin_quote
+Unfortunately, that relief was all that was keeping your worry levels from reaching ridiculous levels. =You'll need to find another way to keep your worry levels manageable.=
+#+end_quote
+
+
+#+begin_quote
+Before anything else, let's talk about the elephant in the room: the meaning of Part 2's "ridiculous levels" of worry, and how to "find another way to keep your worry levels manageable". That is a cryptic hint telling you that the integers are likely to overflow on this part. This breaks the division test if you are not in a language that supports arbitrary integer sizes. And even if you are, the values will be so big that the program will slow to a crawl.
+
+In order to prevent that, it is necessary to take the modulo of the worry level by a common multiple of the test divisors. That should be done before the division test. This does not change the result of the test because the modulo operation wraps back to zero when the dividend is multiple of the divisor. Ideally your should be the least common multiple (LCM) among all divisors, but any common multiple will do as long it does not overflow too. Since all the divisors in this puzzle are primes, it should suffice to just multiply then to get their LCM. I would be lying if I said that I realized that myself, I had to look for hints. But learning is part of the process :)
+#+end_quote
+[[https://www.reddit.com/r/adventofcode/comments/zifqmh/2022_day_11_solutions/][-🎄- 2022 Day 11 Solutions -🎄-]]
+
+* Part2
+对于第二部分，因为存在 =old * old= 的操作，所以数字会变得很大，最终会移除 number 的最大值，甚至溢出 bigint
+
+所以，就如题目提示的一样： =You'll need to find another way to keep your worry levels manageable.=
+
+需要想一个办法，降低计算量。
+
+其实 part1 已经给出提示了，在 test 之前除以 3，就可以很大程度地避免溢出。
+
+对于 part2， 由于 test 的操作是求余是否为 0。
+
+可以发现， 101 / 10 和 1 / 10 的求余结果是一样的。
+
+因此，可以通过求余，将一个很大的数字，先转换成较小的数字。
+
+为了保持求余结果不变，求余的被除数，就要从所有猴子的被除数中找，统计一个最大公约数，简单地处理就是将所有猴子的被除数相乘，作为 worry 值求余变小的被除数。
