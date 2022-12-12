@@ -1,13 +1,11 @@
 import { getInputInterator } from "@/utils.ts"
 
-type Operation = (old: number) => number
-type Test = (worry: number) => string
-
 interface Monkey {
   items: number[],
-  operation: Operation
-  test: Test
+  operation: any
+  test: any
   inspectTime: number
+  dividend: any
 }
 
 const monkeys: Record<string, Monkey> = {}
@@ -24,12 +22,13 @@ const initMonkey = (monkeyInput: string[]) => {
 
   const index = (monkeyIndexMatch && monkeyIndexMatch[1]) ?? 0
   const items = (startItemsMatch && startItemsMatch[1].split(",").map((i) => +i)) ?? []
-  const operation = operationMatch ? (Function('old', `return ${operationMatch[1]}`) as Operation) : (old: number) => old
+  const opt = operationMatch[1].replaceAll('old', 'BigInt(old)').replace(/(\d+)/, "BigInt($1)")
+  const operation = operationMatch && (Function('old', `return ${opt}`))
   const dividend = (testConditionMatch && +testConditionMatch[1]) ?? 1
   const trueMonkey = (trueHandlerMatch && trueHandlerMatch[1]) ?? ''
   const falseMonkey = (falseHandleMatch && falseHandleMatch[1]) ?? ''
-  const test = (worry: number) => {
-    if (worry % dividend === 0) {
+  const test = (worry: bigint) => {
+    if (BigInt(worry) % BigInt(dividend) == 0) {
       return trueMonkey
     }
 
@@ -40,14 +39,15 @@ const initMonkey = (monkeyInput: string[]) => {
     items,
     operation,
     test,
-    inspectTime: 0
+    inspectTime: 0,
+    dividend
   }
 }
 
 const monkeyInputArray: string[][] = []
 let monkeyInput: string[] = []
 
-for await (let line of await getInputInterator(import.meta, 'test.txt')) {
+for await (let line of await getInputInterator(import.meta)) {
   if (line === "") {
     monkeyInputArray.push(monkeyInput)
     monkeyInput = []
