@@ -1,4 +1,7 @@
-import monkeys from "./util.ts"
+import getMonkeys from "./util.ts"
+import type { Monkey } from "./util.ts"
+
+const monkeys = getMonkeys(true) as Record<string, Monkey<bigint>>
 
 const inCommon = Object.values(monkeys).map(({ dividend }) => dividend).reduce((acc, cur) => acc * BigInt(cur), BigInt(1))
 
@@ -8,9 +11,9 @@ for (let i = 0; i < 10000; i++) {
 
     while (monkey.items.length) {
       monkey.inspectTime++
-      const item = monkey.items.shift()
+      const item = monkey.items.shift() as bigint
       const worry = monkey.operation(item)
-      const newWorry = worry % inCommon
+      const newWorry = (worry as bigint) % inCommon
       const target = monkey.test(newWorry)
       monkeys[target].items.push(newWorry)
     }

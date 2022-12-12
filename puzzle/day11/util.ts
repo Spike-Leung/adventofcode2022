@@ -1,16 +1,19 @@
 import { getInputInterator } from "@/utils.ts"
 
-interface Monkey {
-  items: number[],
-  operation: any
-  test: any
+type Operation<T> = (old: T) => T
+type Test<T> = (worry: T) => string
+
+export interface Monkey<T> {
+  items: T[],
+  operation: Operation<T>
+  test: Test<T>
   inspectTime: number
-  dividend: any
+  dividend: T
 }
 
-const monkeys: Record<string, Monkey> = {}
+const monkeys: Record<string, Monkey<number> | Monkey<bigint>> = {}
 
-const initMonkey = (monkeyInput: string[]) => {
+const initMonkey = (monkeyInput: string[], isBigMonkey: boolean) => {
   const [monkeyIndex, startItems, operationStr, testCondition, trueHandler, falseHandler] = monkeyInput
 
   const monkeyIndexMatch = monkeyIndex.match(/Monkey (\d+):/)
@@ -21,26 +24,51 @@ const initMonkey = (monkeyInput: string[]) => {
   const falseHandleMatch = falseHandler.match(/[\sa-zA-Z]+(\d+)/)
 
   const index = (monkeyIndexMatch && monkeyIndexMatch[1]) ?? 0
-  const items = (startItemsMatch && startItemsMatch[1].split(",").map((i) => +i)) ?? []
-  const opt = operationMatch[1].replaceAll('old', 'BigInt(old)').replace(/(\d+)/, "BigInt($1)")
-  const operation = operationMatch && (Function('old', `return ${opt}`))
-  const dividend = (testConditionMatch && +testConditionMatch[1]) ?? 1
+  let dividend = (testConditionMatch && +testConditionMatch[1]) ?? 1
   const trueMonkey = (trueHandlerMatch && trueHandlerMatch[1]) ?? ''
   const falseMonkey = (falseHandleMatch && falseHandleMatch[1]) ?? ''
-  const test = (worry: bigint) => {
-    if (BigInt(worry) % BigInt(dividend) == 0) {
-      return trueMonkey
+
+  let operation, test, items
+
+  if (isBigMonkey) {
+    items = (startItemsMatch && startItemsMatch[1].split(",").map((i) => BigInt(+i))) ?? []
+    const opt = (operationMatch && operationMatch[1].replaceAll('old', 'BigInt(old)').replace(/(\d+)/, "BigInt($1)")) ?? ""
+    operation = (operationMatch && (Function('old', `return ${opt}`) as Operation<bigint>)) ?? ((old: bigint) => old)
+    test = (worry: bigint) => {
+      if (BigInt(worry) % BigInt(dividend) === 0n) {
+        return trueMonkey
+      }
+
+      return falseMonkey
+
     }
 
-    return falseMonkey
+    monkeys[index] = {
+      items,
+      operation,
+      test,
+      inspectTime: 0,
+      dividend: BigInt(dividend)
+    }
+  } else {
+    items = (startItemsMatch && startItemsMatch[1].split(",").map((i) => +i)) ?? []
+    const opt = (operationMatch && operationMatch[1]) ?? ""
+    operation = (operationMatch && (Function('old', `return ${opt}`) as Operation<number>)) ?? ((old: number) => old)
+    test = (worry: number) => {
+      if (worry % dividend === 0) {
+        return trueMonkey
+      }
 
-  }
-  monkeys[index] = {
-    items,
-    operation,
-    test,
-    inspectTime: 0,
-    dividend
+      return falseMonkey
+
+    }
+    monkeys[index] = {
+      items,
+      operation,
+      test,
+      inspectTime: 0,
+      dividend,
+    }
   }
 }
 
@@ -58,8 +86,12 @@ for await (let line of await getInputInterator(import.meta)) {
 monkeyInputArray.push(monkeyInput)
 
 
-for (let monkeyInput of monkeyInputArray) {
-  initMonkey(monkeyInput)
-}
 
-export default monkeys
+
+export default function getMonkeys(isBigMonkey: boolean = false) {
+  for (let monkeyInput of monkeyInputArray) {
+    initMonkey(monkeyInput, isBigMonkey)
+  }
+
+  return monkeys
+}

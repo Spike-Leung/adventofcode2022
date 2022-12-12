@@ -1,4 +1,7 @@
-import monkeys from "./util.ts"
+import getMonkey from "./util.ts"
+import type { Monkey } from "./util.ts"
+
+const monkeys = getMonkey() as Record<string, Monkey<number>>
 
 const reliefWorry = (worry: number) => {
   return Math.floor(worry / 3)
