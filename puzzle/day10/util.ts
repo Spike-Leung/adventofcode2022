@@ -1,5 +1,5 @@
 export const extractAddValue = (line: string): number => {
-  const [mark, val] = line.split(" ")
+  const [mark, val] = line.split(" ");
 
-  return +val
-}
+  return +val;
+};

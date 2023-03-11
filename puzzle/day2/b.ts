@@ -1,17 +1,17 @@
-import { getInputInterator } from "@/utils.ts"
-let totalScore = 0
+import { getInputInterator } from "@/utils.ts";
+let totalScore = 0;
 
 const RESULT = {
   LOSE: "X",
   DRAW: "Y",
   WIN: "Z",
-}
+};
 
 const RESULT_SCORE = {
   LOSE: 0,
   DRAW: 3,
-  WIN: 6
-}
+  WIN: 6,
+};
 
 const BASIC_SCORE = {
   // Rock
@@ -19,8 +19,8 @@ const BASIC_SCORE = {
   // Paper
   Y: 2,
   // Scissors
-  Z: 3
-}
+  Z: 3,
+};
 
 const ROUND_SCORE = {
   // lose
@@ -28,8 +28,8 @@ const ROUND_SCORE = {
   // draw
   [RESULT.DRAW]: RESULT_SCORE.DRAW,
   // win
-  [RESULT.WIN]: RESULT_SCORE.WIN
-}
+  [RESULT.WIN]: RESULT_SCORE.WIN,
+};
 
 const WIN_SCORE = {
   // rock - paper
@@ -37,8 +37,8 @@ const WIN_SCORE = {
   // paper - scissors
   B: BASIC_SCORE.Z,
   // scissors - rock
-  C: BASIC_SCORE.X
-}
+  C: BASIC_SCORE.X,
+};
 
 const LOSE_SCORE = {
   // rock - scissors
@@ -46,8 +46,8 @@ const LOSE_SCORE = {
   // paper - rock
   B: BASIC_SCORE.X,
   // scissors - paper
-  C: BASIC_SCORE.Y
-}
+  C: BASIC_SCORE.Y,
+};
 
 const DRAW_SCORE = {
   // rock - rock
@@ -55,34 +55,37 @@ const DRAW_SCORE = {
   // paper - paper
   B: BASIC_SCORE.Y,
   // scissors - scissors
-  C: BASIC_SCORE.Z
-}
+  C: BASIC_SCORE.Z,
+};
 
 /**
  * X: lose Y: draw Z: win
  */
 function calcScoreInOneRound(strategy: string) {
-  const [opponent, mine] = strategy.split(" ") as [keyof typeof WIN_SCORE, keyof typeof BASIC_SCORE]
+  const [opponent, mine] = strategy.split(" ") as [
+    keyof typeof WIN_SCORE,
+    keyof typeof BASIC_SCORE,
+  ];
 
-  let score = ROUND_SCORE[mine]
+  let score = ROUND_SCORE[mine];
 
   switch (mine) {
     case RESULT.WIN:
-      score += WIN_SCORE[opponent]
-      break
+      score += WIN_SCORE[opponent];
+      break;
     case RESULT.DRAW:
-      score += DRAW_SCORE[opponent]
-      break
+      score += DRAW_SCORE[opponent];
+      break;
     case RESULT.LOSE:
-      score += LOSE_SCORE[opponent]
-      break
+      score += LOSE_SCORE[opponent];
+      break;
   }
 
-  return score
+  return score;
 }
 
 for await (let line of await getInputInterator(import.meta)) {
-  totalScore += calcScoreInOneRound(line)
+  totalScore += calcScoreInOneRound(line);
 }
 
-console.log(totalScore)
+console.log(totalScore);

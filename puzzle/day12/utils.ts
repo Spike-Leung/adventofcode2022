@@ -1,10 +1,9 @@
-import { getInputInterator } from "@/utils.ts"
+import { getInputInterator } from "@/utils.ts";
 
-let matrix: string[][] = []
-
+let matrix: string[][] = [];
 
 for await (let line of await getInputInterator(import.meta)) {
-  matrix.push(line.split(""))
+  matrix.push(line.split(""));
 }
 
-export default matrix
+export default matrix;

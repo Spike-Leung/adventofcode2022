@@ -1,3 +1,3 @@
-import findMarker from "./util.ts"
+import findMarker from "./util.ts";
 
-console.log({ res: findMarker(4) })
+console.log({ res: findMarker(4) });

@@ -1,25 +1,24 @@
-import { getInputInterator } from "@/utils.ts"
+import { getInputInterator } from "@/utils.ts";
 
-import count from "./util.ts"
-let sum = 0
+import count from "./util.ts";
+let sum = 0;
 
 function findSameChar(str: string) {
-  const half = str.length / 2
-  const left = str.slice(0, half)
-  const rightArr = [...str.slice(half)]
+  const half = str.length / 2;
+  const left = str.slice(0, half);
+  const rightArr = [...str.slice(half)];
 
   for (const char of rightArr) {
     if (left.indexOf(char) !== -1) {
-      return char
+      return char;
     }
   }
 
-  return ''
+  return "";
 }
-
 
 for await (let line of await getInputInterator(import.meta)) {
-  sum += (count[findSameChar(line)] ?? 0)
+  sum += count[findSameChar(line)] ?? 0;
 }
 
-console.log({ sum })
+console.log({ sum });

@@ -1,27 +1,30 @@
-import rootDir from "./util.ts"
+import rootDir from "./util.ts";
 
-const LIMIT = 100000
+const LIMIT = 100000;
 
 function calcTotal() {
-  let sum = 0
+  let sum = 0;
 
   const dfs = (data: number | object): number => {
     if (typeof data === "number") {
-      return data
+      return data;
     }
 
-    const dirTotal = Object.values(data).reduce((acc: number, cur: number | object) => acc += dfs(cur), 0)
+    const dirTotal = Object.values(data).reduce(
+      (acc: number, cur: number | object) => acc += dfs(cur),
+      0,
+    );
 
     if (dirTotal <= LIMIT) {
-      sum += dirTotal
+      sum += dirTotal;
     }
 
-    return dirTotal
-  }
+    return dirTotal;
+  };
 
-  dfs(rootDir)
+  dfs(rootDir);
 
-  return sum
+  return sum;
 }
 
-console.log(calcTotal())
+console.log(calcTotal());
