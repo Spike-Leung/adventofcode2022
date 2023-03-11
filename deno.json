@@ -1,0 +1,15 @@
+{
+  "imports": {
+    "@/utils.ts": "./puzzle/utils.ts"
+  },
+  "lint": {
+    "files": {
+      "include": ["puzzle/"]
+    }
+  },
+  "fmt": {
+    "files": {
+      "include": ["puzzle/"]
+    }
+  }
+}
